@@ -1,9 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://dsq7aulymm5vq"]
+[gd_scene load_steps=20 format=3 uid="uid://c7vejcd0008sa"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
 [ext_resource type="Shader" path="res://Shaders/TurbineFlash.gdshader" id="3_r75lb"]
 [ext_resource type="Texture2D" uid="uid://fk5peuum8utu" path="res://Textures/particle.png" id="3_vd8ls"]
 [ext_resource type="Script" path="res://Actors/Components/MovementInput.gd" id="4_8fb13"]
+[ext_resource type="Texture2D" uid="uid://dvswa1ms3sjrx" path="res://Textures/scope.png" id="4_jpgsh"]
+[ext_resource type="Script" path="res://Actors/Components/ShootingInput.gd" id="6_ikq7n"]
+[ext_resource type="PackedScene" uid="uid://bv60ra1rj8phn" path="res://Actors/LaserShot.tscn" id="7_q0v1o"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
 size = Vector3(7.10519, 5.37584, 15.5688)
@@ -76,6 +79,27 @@ resource_name = "TurbineRight"
 material = SubResource("ShaderMaterial_y5llv")
 size = Vector2(3, 3)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vwhv2"]
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_min = 4.0
+scale_max = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cd4c4"]
+transparency = 1
+shading_mode = 0
+disable_ambient_light = true
+albedo_color = Color(0.137255, 0.984314, 0.196078, 0.0627451)
+refraction_scale = -0.56
+disable_receive_shadows = true
+grow_amount = -1.137
+
+[sub_resource type="SphereMesh" id="SphereMesh_1kc37"]
+material = SubResource("StandardMaterial3D_cd4c4")
+radius = 0.3
+height = 0.6
+
 [node name="Player" type="CharacterBody3D"]
 
 [node name="SpaceShip" parent="." instance=ExtResource("1_cvrfo")]
@@ -130,12 +154,54 @@ draw_pass_1 = SubResource("QuadMesh_15qpl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 
 [node name="Cannon_L" type="Node3D" parent="Cannons"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.78171, 0.727646, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.53058, 0.727646, 0)
+
+[node name="LaserShotBase" type="GPUParticles3D" parent="Cannons/Cannon_L"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+emitting = false
+lifetime = 0.15
+one_shot = true
+explosiveness = 0.3
+fixed_fps = 60
+local_coords = true
+draw_order = 2
+trail_lifetime = 0.01
+process_material = SubResource("ParticleProcessMaterial_vwhv2")
+draw_pass_1 = SubResource("SphereMesh_1kc37")
 
 [node name="Cannon_R" type="Node3D" parent="Cannons"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.782, 0.728, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.531, 0.728, 0)
+
+[node name="LaserShotBase" type="GPUParticles3D" parent="Cannons/Cannon_R"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+emitting = false
+lifetime = 0.15
+one_shot = true
+explosiveness = 0.3
+fixed_fps = 60
+local_coords = true
+draw_order = 2
+trail_lifetime = 0.01
+process_material = SubResource("ParticleProcessMaterial_vwhv2")
+draw_pass_1 = SubResource("SphereMesh_1kc37")
+
+[node name="Scope" type="Sprite3D" parent="Cannons"]
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, -17.3672)
+billboard = 2
+texture = ExtResource("4_jpgsh")
+
+[node name="Precision" type="Sprite3D" parent="Cannons/Scope"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -1.375)
+billboard = 2
+texture = ExtResource("4_jpgsh")
 
 [node name="MovementInput" type="Node" parent="."]
 script = ExtResource("4_8fb13")
+planar_speed = 64.0
 
 [node name="ShootingInput" type="Node" parent="."]
+script = ExtResource("6_ikq7n")
+cannon_left_path = NodePath("../Cannons/Cannon_L/LaserShotBase")
+cannon_right_path = NodePath("../Cannons/Cannon_R/LaserShotBase")
+laser_shot = ExtResource("7_q0v1o")
+shot_limit = 24

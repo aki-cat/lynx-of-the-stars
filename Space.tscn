@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4ulfww3rxufh"]
+[gd_scene load_steps=6 format=3 uid="uid://b4ulfww3rxufh"]
 
-[ext_resource type="PackedScene" uid="uid://dsq7aulymm5vq" path="res://Actors/Player.tscn" id="1_7a1wq"]
+[ext_resource type="PackedScene" uid="uid://c7vejcd0008sa" path="res://Actors/Player.tscn" id="1_7a1wq"]
+[ext_resource type="Script" path="res://Actors/Components/PlayerCamera.gd" id="2_icjs3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2hfoe"]
 sky_top_color = Color(0.176471, 0.458824, 0.929412, 1)
@@ -24,14 +25,16 @@ glow_enabled = true
 input_ray_pickable = false
 motion_mode = 1
 
-[node name="Pivot" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="Pivot"]
+[node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 37)
 environment = SubResource("Environment_w1mg7")
 v_offset = 6.0
 current = true
 fov = 90.0
+script = ExtResource("2_icjs3")
+_margin = Vector2i(144, 96)
+_distance = 36.0
+_target_path = NodePath("../Player")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.345916, 0.836516, -0.42495, -0.589634, -0.158493, -0.791967, -0.729845, 0.524519, 0.438413, 0, 12.9491, 0)
