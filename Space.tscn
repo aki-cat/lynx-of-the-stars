@@ -1,14 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8x7ae7c1po3a"]
+[gd_scene load_steps=2 format=3 uid="uid://b4ulfww3rxufh"]
 
-[ext_resource type="PackedScene" uid="uid://dsq7aulymm5vq" path="res://Actors/SpaceShip.tscn" id="1_7a1wq"]
+[ext_resource type="PackedScene" uid="uid://dsq7aulymm5vq" path="res://Actors/Player.tscn" id="1_7a1wq"]
 
 [node name="Space" type="Node3D"]
 
-[node name="Model" parent="." instance=ExtResource("1_7a1wq")]
+[node name="Player" parent="." instance=ExtResource("1_7a1wq")]
 input_ray_pickable = false
 motion_mode = 1
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 37)
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]

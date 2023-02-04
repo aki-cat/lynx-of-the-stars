@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://dsq7aulymm5vq"]
+[gd_scene load_steps=13 format=3 uid="uid://dsq7aulymm5vq"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
+[ext_resource type="Script" path="res://Actors/TurbineParticles.gd" id="2_mo75f"]
 [ext_resource type="Texture2D" uid="uid://fk5peuum8utu" path="res://Textures/particle.png" id="3_vd8ls"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
@@ -46,7 +47,7 @@ albedo_texture = ExtResource("3_vd8ls")
 material = SubResource("StandardMaterial3D_d2bsx")
 size = Vector2(2, 2)
 
-[node name="spaceship" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D"]
 
 [node name="SpaceShip" parent="." instance=ExtResource("1_cvrfo")]
 
@@ -62,7 +63,10 @@ shape = SubResource("BoxShape3D_cpwpq")
 transform = Transform3D(0.828571, 0.152955, 0.538586, -0.164991, 0.985948, -0.0261769, -0.535022, -0.0671724, 0.842164, -7.238, 1.615, 5.034)
 shape = SubResource("BoxShape3D_cpwpq")
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+[node name="TurbineParticles" type="Node3D" parent="."]
+script = ExtResource("2_mo75f")
+
+[node name="MTurbine" type="GPUParticles3D" parent="TurbineParticles"]
 transform = Transform3D(-1.253, 1.09541e-07, 0, -1.09541e-07, -1.253, 0, 0, 0, 0.527, 0.0131962, 1.4163, 8.90745)
 lifetime = 0.2
 fixed_fps = 60
@@ -70,7 +74,7 @@ draw_order = 2
 process_material = SubResource("ParticleProcessMaterial_ovxnw")
 draw_pass_1 = SubResource("QuadMesh_edev7")
 
-[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+[node name="RTurbine" type="GPUParticles3D" parent="TurbineParticles"]
 transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, 4.403, 0.90372, 7.41548)
 lifetime = 0.1
 explosiveness = 0.55
@@ -78,7 +82,7 @@ fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_ovxnw")
 draw_pass_1 = SubResource("QuadMesh_imos1")
 
-[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+[node name="LTurbine" type="GPUParticles3D" parent="TurbineParticles"]
 transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, -4.403, 0.904163, 7.41548)
 lifetime = 0.1
 fixed_fps = 60
