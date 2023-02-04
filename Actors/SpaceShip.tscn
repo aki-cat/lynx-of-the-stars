@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://dsq7aulymm5vq"]
+
+[ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
+[ext_resource type="Texture2D" uid="uid://fk5peuum8utu" path="res://Textures/particle.png" id="3_vd8ls"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
+size = Vector3(7.10519, 5.37584, 15.5688)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cpwpq"]
+size = Vector3(17.9171, 2.5316, 7.33165)
+
+[sub_resource type="Gradient" id="Gradient_avfx7"]
+colors = PackedColorArray(1, 1, 1, 0.12549, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_88wh4"]
+gradient = SubResource("Gradient_avfx7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ovxnw"]
+emission_shape = 3
+emission_box_extents = Vector3(0.25, 0.25, 1)
+gravity = Vector3(0, 0, 0)
+color = Color(1, 1, 1, 0.12549)
+color_ramp = SubResource("GradientTexture1D_88wh4")
+sub_emitter_mode = 1
+sub_emitter_frequency = 4.0
+attractor_interaction_enabled = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12b31"]
+transparency = 1
+blend_mode = 1
+albedo_color = Color(1, 1, 1, 0.25098)
+albedo_texture = ExtResource("3_vd8ls")
+
+[sub_resource type="QuadMesh" id="QuadMesh_edev7"]
+material = SubResource("StandardMaterial3D_12b31")
+size = Vector2(6, 6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d2bsx"]
+transparency = 1
+blend_mode = 1
+no_depth_test = true
+albedo_color = Color(1, 1, 1, 0.12549)
+albedo_texture = ExtResource("3_vd8ls")
+
+[sub_resource type="QuadMesh" id="QuadMesh_imos1"]
+material = SubResource("StandardMaterial3D_d2bsx")
+size = Vector2(2, 2)
+
+[node name="spaceship" type="CharacterBody3D"]
+
+[node name="SpaceShip" parent="." instance=ExtResource("1_cvrfo")]
+
+[node name="Hitbox_Hull" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33037, 0)
+shape = SubResource("BoxShape3D_d80mm")
+
+[node name="Hitbox_WingR" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.828797, -0.152405, -0.538394, 0.164789, 0.986001, -0.0254365, 0.534734, -0.0676395, 0.842309, 7.23817, 1.61504, 5.0344)
+shape = SubResource("BoxShape3D_cpwpq")
+
+[node name="Hitbox_WingR2" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.828571, 0.152955, 0.538586, -0.164991, 0.985948, -0.0261769, -0.535022, -0.0671724, 0.842164, -7.238, 1.615, 5.034)
+shape = SubResource("BoxShape3D_cpwpq")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(-1.253, 1.09541e-07, 0, -1.09541e-07, -1.253, 0, 0, 0, 0.527, 0.0131962, 1.4163, 8.90745)
+lifetime = 0.2
+fixed_fps = 60
+draw_order = 2
+process_material = SubResource("ParticleProcessMaterial_ovxnw")
+draw_pass_1 = SubResource("QuadMesh_edev7")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="."]
+transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, 4.403, 0.90372, 7.41548)
+lifetime = 0.1
+explosiveness = 0.55
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ovxnw")
+draw_pass_1 = SubResource("QuadMesh_imos1")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="."]
+transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, -4.403, 0.904163, 7.41548)
+lifetime = 0.1
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ovxnw")
+draw_pass_1 = SubResource("QuadMesh_imos1")
