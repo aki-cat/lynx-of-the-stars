@@ -1,13 +1,14 @@
 shader_type spatial;
 
-uniform float max_opacity = 1.f;
-uniform vec3 tint : source_color = vec3(1.f);
-
-const float RING_PERCENTAGE =  0.5f;
+uniform sampler2D tex;
+uniform vec3 rim_color: source_color = vec3(1.0f);
 
 void fragment() {
-	float dist = distance(UV, vec2(.5f, .5f)) * 2.f;
-	dist = step(RING_PERCENTAGE, dist) * dist;
-	ALPHA = max(0.f, (1.f - dist) * max_opacity);
-	ALBEDO = tint;
+	vec4 texcol = texture(tex, UV);
+	float a = smoothstep(1.f, 0.f, 2.f * distance(UV, vec2(0.5f, 0.5f)));
+	ALBEDO = (texcol.rgb + COLOR.rgb) * 0.5f * (a * rim_color);
+	ALPHA = texcol.a * COLOR.a * a;
+	RIM = 1.0f;
+	RADIANCE = texcol;
+	IRRADIANCE = texcol;
 }

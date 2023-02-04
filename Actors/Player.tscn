@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://dsq7aulymm5vq"]
+[gd_scene load_steps=14 format=3 uid="uid://dsq7aulymm5vq"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
-[ext_resource type="Script" path="res://Actors/TurbineParticles.gd" id="2_mo75f"]
+[ext_resource type="Shader" path="res://Shaders/TurbineFlash.gdshader" id="3_r75lb"]
 [ext_resource type="Texture2D" uid="uid://fk5peuum8utu" path="res://Textures/particle.png" id="3_vd8ls"]
+[ext_resource type="Script" path="res://Actors/Components/MovementInput.gd" id="4_8fb13"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
 size = Vector3(7.10519, 5.37584, 15.5688)
@@ -10,42 +11,70 @@ size = Vector3(7.10519, 5.37584, 15.5688)
 [sub_resource type="BoxShape3D" id="BoxShape3D_cpwpq"]
 size = Vector3(17.9171, 2.5316, 7.33165)
 
-[sub_resource type="Gradient" id="Gradient_avfx7"]
-colors = PackedColorArray(1, 1, 1, 0.12549, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_88wh4"]
-gradient = SubResource("Gradient_avfx7")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ovxnw"]
-emission_shape = 3
-emission_box_extents = Vector3(0.25, 0.25, 1)
+direction = Vector3(0, 0, 1)
+spread = 5.0
 gravity = Vector3(0, 0, 0)
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+linear_accel_min = -100.0
+linear_accel_max = -50.0
+angle_min = -180.0
+angle_max = 180.0
+scale_min = 0.5
+scale_max = 1.5
 color = Color(1, 1, 1, 0.12549)
-color_ramp = SubResource("GradientTexture1D_88wh4")
+hue_variation_max = 0.2
 sub_emitter_mode = 1
 sub_emitter_frequency = 4.0
 attractor_interaction_enabled = false
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12b31"]
-transparency = 1
-blend_mode = 1
-albedo_color = Color(1, 1, 1, 0.25098)
-albedo_texture = ExtResource("3_vd8ls")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k11q8"]
+resource_local_to_scene = true
+resource_name = "Turbine"
+render_priority = 1
+shader = ExtResource("3_r75lb")
+shader_parameter/rim_color = Color(0.996078, 0.909804, 0.772549, 1)
+shader_parameter/tex = ExtResource("3_vd8ls")
 
-[sub_resource type="QuadMesh" id="QuadMesh_edev7"]
-material = SubResource("StandardMaterial3D_12b31")
+[sub_resource type="QuadMesh" id="QuadMesh_crmok"]
+resource_name = "TurbineMiddle"
+material = SubResource("ShaderMaterial_k11q8")
 size = Vector2(6, 6)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d2bsx"]
-transparency = 1
-blend_mode = 1
-no_depth_test = true
-albedo_color = Color(1, 1, 1, 0.12549)
-albedo_texture = ExtResource("3_vd8ls")
+[sub_resource type="Shader" id="Shader_ss55y"]
+resource_local_to_scene = true
+code = "shader_type spatial;
 
-[sub_resource type="QuadMesh" id="QuadMesh_imos1"]
-material = SubResource("StandardMaterial3D_d2bsx")
-size = Vector2(2, 2)
+uniform sampler2D tex;
+uniform vec3 rim_color: source_color = vec3(1.0f);
+
+void fragment() {
+	vec4 texcol = texture(tex, UV);
+	float a = smoothstep(1.f, 0.f, 2.f * distance(UV, vec2(0.5f, 0.5f)));
+	ALBEDO = (texcol.rgb + COLOR.rgb) * 0.5f * (a * rim_color);
+	ALPHA = texcol.a * COLOR.a * a;
+	RIM = 1.0f;
+	RADIANCE = texcol;
+	IRRADIANCE = texcol;
+}
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_li6lk"]
+load_path = "res://.godot/imported/particle.png-6cde8bf8361fccad2ad7de601b2903a9.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y5llv"]
+resource_local_to_scene = true
+resource_name = "Turbine"
+render_priority = 1
+shader = SubResource("Shader_ss55y")
+shader_parameter/rim_color = Color(0.996078, 0.909804, 0.772549, 1)
+shader_parameter/tex = SubResource("CompressedTexture2D_li6lk")
+
+[sub_resource type="QuadMesh" id="QuadMesh_15qpl"]
+resource_name = "TurbineRight"
+material = SubResource("ShaderMaterial_y5llv")
+size = Vector2(3, 3)
 
 [node name="Player" type="CharacterBody3D"]
 
@@ -64,27 +93,49 @@ transform = Transform3D(0.828571, 0.152955, 0.538586, -0.164991, 0.985948, -0.02
 shape = SubResource("BoxShape3D_cpwpq")
 
 [node name="TurbineParticles" type="Node3D" parent="."]
-script = ExtResource("2_mo75f")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.55363)
 
 [node name="MTurbine" type="GPUParticles3D" parent="TurbineParticles"]
-transform = Transform3D(-1.253, 1.09541e-07, 0, -1.09541e-07, -1.253, 0, 0, 0, 0.527, 0.0131962, 1.4163, 8.90745)
-lifetime = 0.2
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 0.077203, 1.67867, 9.43697)
+cast_shadow = 0
+amount = 32
+lifetime = 0.1
+fixed_fps = 60
+visibility_aabb = AABB(-4, -4, -3.654, 8, 8, 7.308)
+draw_order = 2
+process_material = SubResource("ParticleProcessMaterial_ovxnw")
+draw_pass_1 = SubResource("QuadMesh_crmok")
+
+[node name="RTurbine" type="GPUParticles3D" parent="TurbineParticles"]
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, 4.38967, 1.12036, 8.90745)
+cast_shadow = 0
+amount = 32
+lifetime = 0.1
 fixed_fps = 60
 draw_order = 2
 process_material = SubResource("ParticleProcessMaterial_ovxnw")
-draw_pass_1 = SubResource("QuadMesh_edev7")
-
-[node name="RTurbine" type="GPUParticles3D" parent="TurbineParticles"]
-transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, 4.403, 0.90372, 7.41548)
-lifetime = 0.1
-explosiveness = 0.55
-fixed_fps = 60
-process_material = SubResource("ParticleProcessMaterial_ovxnw")
-draw_pass_1 = SubResource("QuadMesh_imos1")
+draw_pass_1 = SubResource("QuadMesh_15qpl")
 
 [node name="LTurbine" type="GPUParticles3D" parent="TurbineParticles"]
-transform = Transform3D(-1.00731, 0, 0, 0, -1.00731, 0, 0, 0, 0.437013, -4.403, 0.904163, 7.41548)
+transform = Transform3D(-1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0, 1, -4.39, 1.12, 8.907)
+cast_shadow = 0
+amount = 32
 lifetime = 0.1
 fixed_fps = 60
+draw_order = 2
 process_material = SubResource("ParticleProcessMaterial_ovxnw")
-draw_pass_1 = SubResource("QuadMesh_imos1")
+draw_pass_1 = SubResource("QuadMesh_15qpl")
+
+[node name="Cannons" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="Cannon_L" type="Node3D" parent="Cannons"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.78171, 0.727646, 0)
+
+[node name="Cannon_R" type="Node3D" parent="Cannons"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.782, 0.728, 0)
+
+[node name="MovementInput" type="Node" parent="."]
+script = ExtResource("4_8fb13")
+
+[node name="ShootingInput" type="Node" parent="."]
