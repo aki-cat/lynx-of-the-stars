@@ -7,7 +7,7 @@
 script = ExtResource("1_pakdh")
 
 [node name="Asteroid" parent="." instance=ExtResource("2_6mpu1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 91.4215, -79)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 91.4215, -79)
 
 [node name="Asteroid2" parent="." instance=ExtResource("2_6mpu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 91.4215, -94)
@@ -29,3 +29,36 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 111.421, -79)
 
 [node name="Asteroid8" parent="." instance=ExtResource("2_6mpu1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 29.4215, -79)
+
+[node name="Asteroid9" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 90.4215, -173)
+
+[node name="Asteroid10" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 38.4215, -173)
+
+[node name="Asteroid11" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 111.421, -173)
+
+[node name="Asteroid12" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67, 15.4215, -173)
+
+[node name="Asteroid13" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 20.4215, -173)
+
+[node name="Asteroid14" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 45.4215, -291)
+
+[node name="Asteroid15" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 83.4215, -359)
+
+[node name="Asteroid16" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -83.5785, -505)
+
+[node name="Asteroid17" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, -83.5785, -388)
+
+[node name="Asteroid18" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 61, -83.5785, -468)
+
+[node name="Asteroid19" parent="." instance=ExtResource("2_6mpu1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 76.4215, -379)

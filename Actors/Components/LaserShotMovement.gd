@@ -24,5 +24,5 @@ func die():
 	if error != OK:
 		printerr(error_string(error))
 
-func _collided(something):
+func _collided(body):
 	die()
