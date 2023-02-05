@@ -1,6 +1,16 @@
-# lynx-of-the-stars
+# Lynx of the Stars
 
 Totally not a fangame for GGJ 2023
+
+## Controls
+
+Gamepad support is supposedly built-in, but you can use keyboard instead.
+
+[s] [d] [f] respectively: break, accelerate, and shoot!
+
+[directional keys] movement! y-axis inverted
+
+Have fun!
 
 ## Credits
 
