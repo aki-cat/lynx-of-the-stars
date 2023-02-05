@@ -8,6 +8,8 @@ var speed: float = 10.0
 var lifetime: float = 2.0
 
 func _ready():
+	self.monitoring = true
+	self.body_entered.connect(_collided)
 	var timer = Timer.new()
 	add_child(timer, false, Node.INTERNAL_MODE_BACK)
 	timer.set_wait_time(lifetime)
@@ -21,3 +23,6 @@ func die():
 	var error := emit_signal(laser_died.get_name(), self)
 	if error != OK:
 		printerr(error_string(error))
+
+func _collided(something):
+	die()

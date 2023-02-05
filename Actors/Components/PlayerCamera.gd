@@ -16,25 +16,14 @@ var _target_path: NodePath
 var _target: Node3D = get_node(_target_path) as Node3D
 
 func _physics_process(delta: float):
-	follow_distance(delta)
 	follow_panning(delta)
-	clamp_target_position()
-
-func follow_distance(delta: float):
-	var origin_z := self.global_transform.origin.z
-	var target_z := _target.global_transform.origin.z + _distance
-	origin_z += (target_z - origin_z) * delta * _chase_speed
-	self.global_transform.origin.z = origin_z
+	#clamp_target_position()
 
 func follow_panning(delta: float):
 	var camera_pos := self.global_transform.origin
-	var target_pos := _target.global_transform.origin
-	var camera_movement = Vector3(
-		(target_pos.x - camera_pos.x),
-		(target_pos.y - camera_pos.y),
-		0
-	) * delta * _chase_speed
-	self.global_transform = self.global_transform.translated(camera_movement)
+	var target_pos := _target.global_transform.origin + Vector3(0, 1, 2).normalized() * _distance
+	var movement := target_pos - camera_pos
+	self.global_translate(movement * _chase_speed * delta)
 
 func clamp_target_position():
 	var window_size := get_window().size

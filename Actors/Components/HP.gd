@@ -36,6 +36,6 @@ func _on_physical_contact(normal: Vector3):
 	if !_timer.is_stopped():
 		return
 	_timer.start(invincibility_period)
-	self.owner.velocity += normal * 512
+	self.owner.velocity += normal * 256
 	take_damage(3)
-	Hud.flash(3, .05, Color(.9, .25, .25, .75))
+	Hud.flash(1, .1, Color(0, 0, 0, .5))

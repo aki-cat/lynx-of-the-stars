@@ -44,6 +44,8 @@ shadow_mesh = SubResource("ArrayMesh_3567e")
 size = Vector3(0.903601, 0.683785, 8)
 
 [node name="Laser" type="Area3D"]
+collision_layer = 8
+collision_mask = 5
 script = ExtResource("1_mjcyx")
 speed = 200.0
 lifetime = 1.0

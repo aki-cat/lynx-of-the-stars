@@ -23,23 +23,23 @@ glow_enabled = true
 [node name="Space" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_u3tms")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 337.593, 741.644)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13, 32)
 input_ray_pickable = false
-motion_mode = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 343, 322)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.2103, 61)
 environment = SubResource("Environment_w1mg7")
-v_offset = 6.0
 current = true
 fov = 90.0
 script = ExtResource("2_c28v8")
+_chase_speed = 50.0
 _margin = Vector2i(144, 96)
-_distance = 36.0
+_distance = 72.0
 _target_path = NodePath("../Player")
 
 [node name="Sunlight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.345916, 0.836516, -0.42495, -0.589634, -0.158493, -0.791967, -0.729845, 0.524519, 0.438413, 0, 12.9491, 0)
+shadow_enabled = true
 sky_mode = 1
 
 [node name="Level00" parent="." instance=ExtResource("3_8ye5e")]

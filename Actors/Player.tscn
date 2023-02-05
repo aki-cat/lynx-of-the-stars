@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c7vejcd0008sa"]
+[gd_scene load_steps=22 format=3 uid="uid://c7vejcd0008sa"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
 [ext_resource type="Shader" path="res://Shaders/TurbineFlash.gdshader" id="3_r75lb"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Actors/Components/ShootingInput.gd" id="6_ikq7n"]
 [ext_resource type="PackedScene" uid="uid://bv60ra1rj8phn" path="res://Actors/LaserShot.tscn" id="7_q0v1o"]
 [ext_resource type="Script" path="res://Actors/Components/HP.gd" id="8_jfskt"]
+[ext_resource type="Script" path="res://Actors/Components/AccelerationInput.gd" id="9_q4yvb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
 size = Vector3(7.10519, 5.37584, 15.5688)
@@ -102,6 +103,9 @@ radius = 0.3
 height = 0.6
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 21
+motion_mode = 1
 
 [node name="SpaceShip" parent="." instance=ExtResource("1_cvrfo")]
 
@@ -185,13 +189,15 @@ process_material = SubResource("ParticleProcessMaterial_vwhv2")
 draw_pass_1 = SubResource("SphereMesh_1kc37")
 
 [node name="Scope" type="Sprite3D" parent="Cannons"]
-transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, -17.3672)
+transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, 0, -38.1477)
 billboard = 2
+no_depth_test = true
 texture = ExtResource("4_jpgsh")
 
 [node name="Precision" type="Sprite3D" parent="Cannons/Scope"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -1.375)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, -2.94714)
 billboard = 2
+no_depth_test = true
 texture = ExtResource("4_jpgsh")
 
 [node name="MovementInput" type="Node" parent="."]
@@ -207,5 +213,8 @@ shot_limit = 24
 
 [node name="HP" type="Node" parent="."]
 script = ExtResource("8_jfskt")
+
+[node name="AccelerationInput" type="Node" parent="."]
+script = ExtResource("9_q4yvb")
 
 [connection signal="body_collided" from="MovementInput" to="HP" method="_on_physical_contact"]

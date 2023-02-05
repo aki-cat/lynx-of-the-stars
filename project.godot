@@ -84,6 +84,14 @@ TILT_RIGHT={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Foe"
+3d_physics/layer_4="Shot_Player"
+3d_physics/layer_5="Shot_Foe"
+
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.12549, 0.12549, 0.12549, 1)

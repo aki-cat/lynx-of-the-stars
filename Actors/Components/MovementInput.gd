@@ -58,5 +58,5 @@ func move_body(delta: float):
 	self.body.velocity *= 0.9
 	if self.body.move_and_slide():
 		var collision_normal := self.body.get_last_slide_collision().get_normal(0)
-		emit_signal(body_collided.get_name(), self.body.get_last_slide_collision().get_normal(0))
+		emit_signal(body_collided.get_name(), collision_normal)
 
