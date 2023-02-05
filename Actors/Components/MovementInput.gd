@@ -1,5 +1,7 @@
 extends Node
 
+signal body_collided(normal: Vector3)
+
 const ANGLE_TILT := PI * 0.25
 const TRANSFORM_INTERPOLATION := 0.25
 
@@ -49,8 +51,12 @@ func set_steering_angle():
 	)
 
 func move_body(delta: float):
-	self.body.move_and_collide(
-		Vector3(self._steering.x, self._steering.y, 0) * self.planar_speed * delta
-	)
-	self.body.move_and_slide()
+	# self.body.move_and_collide(
+	# 	Vector3(self._steering.x, self._steering.y, 0) * self.planar_speed * delta
+	# )
+	self.body.velocity += Vector3(self._steering.x, self._steering.y, 0) * self.planar_speed * 10 * delta
+	self.body.velocity *= 0.9
+	if self.body.move_and_slide():
+		var collision_normal := self.body.get_last_slide_collision().get_normal(0)
+		emit_signal(body_collided.get_name(), self.body.get_last_slide_collision().get_normal(0))
 

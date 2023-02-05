@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c7vejcd0008sa"]
+[gd_scene load_steps=21 format=3 uid="uid://c7vejcd0008sa"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
 [ext_resource type="Shader" path="res://Shaders/TurbineFlash.gdshader" id="3_r75lb"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dvswa1ms3sjrx" path="res://Textures/scope.png" id="4_jpgsh"]
 [ext_resource type="Script" path="res://Actors/Components/ShootingInput.gd" id="6_ikq7n"]
 [ext_resource type="PackedScene" uid="uid://bv60ra1rj8phn" path="res://Actors/LaserShot.tscn" id="7_q0v1o"]
+[ext_resource type="Script" path="res://Actors/Components/HP.gd" id="8_jfskt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
 size = Vector3(7.10519, 5.37584, 15.5688)
@@ -165,7 +166,6 @@ explosiveness = 0.3
 fixed_fps = 60
 local_coords = true
 draw_order = 2
-trail_lifetime = 0.01
 process_material = SubResource("ParticleProcessMaterial_vwhv2")
 draw_pass_1 = SubResource("SphereMesh_1kc37")
 
@@ -181,7 +181,6 @@ explosiveness = 0.3
 fixed_fps = 60
 local_coords = true
 draw_order = 2
-trail_lifetime = 0.01
 process_material = SubResource("ParticleProcessMaterial_vwhv2")
 draw_pass_1 = SubResource("SphereMesh_1kc37")
 
@@ -205,3 +204,8 @@ cannon_left_path = NodePath("../Cannons/Cannon_L/LaserShotBase")
 cannon_right_path = NodePath("../Cannons/Cannon_R/LaserShotBase")
 laser_shot = ExtResource("7_q0v1o")
 shot_limit = 24
+
+[node name="HP" type="Node" parent="."]
+script = ExtResource("8_jfskt")
+
+[connection signal="body_collided" from="MovementInput" to="HP" method="_on_physical_contact"]
