@@ -1,24 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4ulfww3rxufh"]
+[gd_scene load_steps=8 format=3 uid="uid://b4ulfww3rxufh"]
 
 [ext_resource type="PackedScene" uid="uid://c7vejcd0008sa" path="res://Actors/Player.tscn" id="1_u3tms"]
 [ext_resource type="Script" path="res://Actors/Components/PlayerCamera.gd" id="2_c28v8"]
 [ext_resource type="PackedScene" uid="uid://8yosofawqs77" path="res://Levels/Level00.tscn" id="3_8ye5e"]
+[ext_resource type="Texture2D" uid="uid://degm8hw6ay8d0" path="res://Textures/big-starry.png" id="4_38gfx"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2hfoe"]
-sky_top_color = Color(0.176471, 0.458824, 0.929412, 1)
-sky_horizon_color = Color(0.917647, 0.603922, 0.321569, 1)
-sky_energy_multiplier = 1.5
-ground_bottom_color = Color(0.309804, 0.439216, 0.294118, 1)
-ground_horizon_color = Color(0.917647, 0.603922, 0.321569, 1)
-ground_energy_multiplier = 0.75
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_elnnv"]
+panorama = ExtResource("4_38gfx")
 
-[sub_resource type="Sky" id="Sky_0myao"]
-sky_material = SubResource("ProceduralSkyMaterial_2hfoe")
+[sub_resource type="Sky" id="Sky_ir1pa"]
+sky_material = SubResource("PanoramaSkyMaterial_elnnv")
 
-[sub_resource type="Environment" id="Environment_w1mg7"]
+[sub_resource type="Environment" id="Environment_8hhvq"]
 background_mode = 2
-sky = SubResource("Sky_0myao")
+background_energy_multiplier = 4.73
+sky = SubResource("Sky_ir1pa")
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 1.89
+ssao_radius = 0.01
 glow_enabled = true
+glow_blend_mode = 0
+fog_enabled = true
+fog_light_color = Color(0, 0, 0, 1)
+fog_aerial_perspective = 0.314
+adjustment_enabled = true
 
 [node name="Space" type="Node3D"]
 
@@ -28,7 +34,6 @@ input_ray_pickable = false
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.2103, 61)
-environment = SubResource("Environment_w1mg7")
 current = true
 fov = 90.0
 script = ExtResource("2_c28v8")
@@ -43,3 +48,6 @@ shadow_enabled = true
 sky_mode = 1
 
 [node name="Level00" parent="." instance=ExtResource("3_8ye5e")]
+
+[node name="SPAAAACE" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8hhvq")

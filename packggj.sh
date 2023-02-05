@@ -1,5 +1,12 @@
 #!/bin/bash
 
+ZIP_CMD=7z
+
+if [ ! "command -v ${ZIP_CMD}" ]; then
+    echo "No 7z command found in PATH. Either add it to your PATH or set the env var ZIP_CMD to the 7z binary file location."
+    exit -1
+fi
+
 OUT_DIR=.package
 OUT_DIR_SOURCE=${OUT_DIR}/source
 OUT_DIR_RELEASE=${OUT_DIR}/release
