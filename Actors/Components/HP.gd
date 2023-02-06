@@ -1,4 +1,4 @@
-extends Node
+class_name HP extends Node
 
 signal has_died
 signal has_taken_damage(updated_hp: int)
@@ -24,6 +24,7 @@ func _ready():
 func take_damage(amount: int):
 	self.damage = clamp(self.damage + amount, 0, self.max_hp)
 	emit_signal(has_taken_damage.get_name(), get_hp())
+	check_for_death()
 
 func check_for_death():
 	if get_hp() <= 0:

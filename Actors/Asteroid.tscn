@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckfhjgwgx4v32"]
+[gd_scene load_steps=10 format=3 uid="uid://booftytugw6qs"]
 
 [ext_resource type="Texture2D" uid="uid://dv417fggbj0w8" path="res://Textures/rock.png" id="1_1ufh7"]
 [ext_resource type="Script" path="res://Actors/Asteroid.gd" id="1_7cvhy"]
+[ext_resource type="Script" path="res://Actors/Components/HP.gd" id="3_ohmoq"]
+[ext_resource type="Script" path="res://Actors/Components/RigidShootable.gd" id="4_ltkx0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dhxvj"]
 diffuse_mode = 3
@@ -63,3 +65,13 @@ skeleton = NodePath("")
 
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_qwxm1")
+
+[node name="RigidShootable" type="Node" parent="." node_paths=PackedStringArray("_body")]
+script = ExtResource("4_ltkx0")
+_hp_path = NodePath("../HP")
+_body = NodePath("..")
+
+[node name="HP" type="Node" parent="."]
+script = ExtResource("3_ohmoq")
+invincibility_period = 0.1
+max_hp = 3
