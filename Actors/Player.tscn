@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c7vejcd0008sa"]
+[gd_scene load_steps=22 format=3 uid="uid://ce1gtveysjmgh"]
 
 [ext_resource type="PackedScene" uid="uid://bas8lkjlyruni" path="res://Models/SpaceShip.glb" id="1_cvrfo"]
 [ext_resource type="Shader" path="res://Shaders/TurbineFlash.gdshader" id="3_r75lb"]
@@ -7,14 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://dvswa1ms3sjrx" path="res://Textures/scope.png" id="4_jpgsh"]
 [ext_resource type="Script" path="res://Actors/Components/ShootingInput.gd" id="6_ikq7n"]
 [ext_resource type="PackedScene" uid="uid://bv60ra1rj8phn" path="res://Actors/LaserShot.tscn" id="7_q0v1o"]
-[ext_resource type="Script" path="res://Actors/Components/HP.gd" id="8_jfskt"]
+[ext_resource type="Script" path="res://Actors/Components/Damageable.gd" id="8_tc4yx"]
 [ext_resource type="Script" path="res://Actors/Components/AccelerationInput.gd" id="9_q4yvb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80mm"]
-size = Vector3(7.10519, 5.37584, 15.5688)
+size = Vector3(6, 5.37584, 15.5688)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cpwpq"]
-size = Vector3(17.9171, 2.5316, 7.33165)
+size = Vector3(15.2702, 2.5316, 4.41046)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ovxnw"]
 direction = Vector3(0, 0, 1)
@@ -104,7 +104,7 @@ height = 0.6
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
-collision_mask = 21
+collision_mask = 7
 motion_mode = 1
 
 [node name="SpaceShip" parent="." instance=ExtResource("1_cvrfo")]
@@ -114,11 +114,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33037, 0)
 shape = SubResource("BoxShape3D_d80mm")
 
 [node name="Hitbox_WingR" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.828797, -0.152405, -0.538394, 0.164789, 0.986001, -0.0254365, 0.534734, -0.0676395, 0.842309, 7.23817, 1.61504, 5.0344)
+transform = Transform3D(0.718971, -0.120315, -0.684547, 0.165048, 0.986286, 0, 0.675159, -0.112983, 0.728968, 5.82973, 1.61504, 2.56228)
 shape = SubResource("BoxShape3D_cpwpq")
 
-[node name="Hitbox_WingR2" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.828571, 0.152955, 0.538586, -0.164991, 0.985948, -0.0261769, -0.535022, -0.0671724, 0.842164, -7.238, 1.615, 5.034)
+[node name="Hitbox_WingL" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.718971, 0.120315, 0.684547, -0.165048, 0.986286, 0, -0.675159, -0.112983, 0.728968, -5.83, 1.615, 2.562)
+shape = SubResource("BoxShape3D_cpwpq")
+
+[node name="ShootableArea" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 16
+
+[node name="Hitbox_Hull" type="CollisionShape3D" parent="ShootableArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33037, 0)
+shape = SubResource("BoxShape3D_d80mm")
+
+[node name="Hitbox_WingR" type="CollisionShape3D" parent="ShootableArea"]
+transform = Transform3D(0.718971, -0.120315, -0.684547, 0.165048, 0.986286, 0, 0.675159, -0.112983, 0.728968, 5.82973, 1.61504, 2.56228)
+shape = SubResource("BoxShape3D_cpwpq")
+
+[node name="Hitbox_WingL" type="CollisionShape3D" parent="ShootableArea"]
+transform = Transform3D(0.718971, 0.120315, 0.684547, -0.165048, 0.986286, 0, -0.675159, -0.112983, 0.728968, -5.83, 1.615, 2.562)
 shape = SubResource("BoxShape3D_cpwpq")
 
 [node name="TurbineParticles" type="Node3D" parent="."]
@@ -211,10 +227,12 @@ cannon_right_path = NodePath("../Cannons/Cannon_R/LaserShotBase")
 laser_shot = ExtResource("7_q0v1o")
 shot_limit = 24
 
-[node name="HP" type="Node" parent="."]
-script = ExtResource("8_jfskt")
+[node name="Damageable" type="Node" parent="." node_paths=PackedStringArray("_collision_area")]
+script = ExtResource("8_tc4yx")
+_type = 1
+_collision_area = NodePath("../ShootableArea")
 
 [node name="AccelerationInput" type="Node" parent="."]
 script = ExtResource("9_q4yvb")
 
-[connection signal="body_collided" from="MovementInput" to="HP" method="_on_physical_contact"]
+[connection signal="collided_with_body" from="MovementInput" to="Damageable" method="_on_physical_contact"]

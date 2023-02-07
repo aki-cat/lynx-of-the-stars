@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://booftytugw6qs"]
+[gd_scene load_steps=10 format=3 uid="uid://gma2tcald3nh"]
 
 [ext_resource type="Texture2D" uid="uid://dv417fggbj0w8" path="res://Textures/rock.png" id="1_1ufh7"]
 [ext_resource type="Script" path="res://Actors/Asteroid.gd" id="1_7cvhy"]
-[ext_resource type="Script" path="res://Actors/Components/HP.gd" id="3_ohmoq"]
-[ext_resource type="Script" path="res://Actors/Components/RigidShootable.gd" id="4_ltkx0"]
+[ext_resource type="Script" path="res://Actors/Components/Damageable.gd" id="3_4k7lh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dhxvj"]
 diffuse_mode = 3
@@ -46,11 +45,14 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_palhk")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_qwxm1"]
-radius = 0.924348
+radius = 0.786075
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_htn1c"]
+radius = 0.930497
 
 [node name="Asteroid" type="RigidBody3D"]
 collision_layer = 4
-collision_mask = 15
+collision_mask = 7
 input_ray_pickable = false
 mass = 10.0
 gravity_scale = 0.0
@@ -63,15 +65,20 @@ material_override = SubResource("StandardMaterial3D_dhxvj")
 mesh = SubResource("ArrayMesh_dd6qo")
 skeleton = NodePath("")
 
-[node name="Hitbox" type="CollisionShape3D" parent="."]
+[node name="PhysicalHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_qwxm1")
 
-[node name="RigidShootable" type="Node" parent="." node_paths=PackedStringArray("_body")]
-script = ExtResource("4_ltkx0")
-_hp_path = NodePath("../HP")
-_body = NodePath("..")
+[node name="CollisionArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 8
 
-[node name="HP" type="Node" parent="."]
-script = ExtResource("3_ohmoq")
-invincibility_period = 0.1
-max_hp = 3
+[node name="DamageableHitbox" type="CollisionShape3D" parent="CollisionArea"]
+shape = SubResource("SphereShape3D_htn1c")
+
+[node name="Damageable" type="Node" parent="." node_paths=PackedStringArray("_collision_area")]
+script = ExtResource("3_4k7lh")
+_type = 2
+_collision_area = NodePath("../CollisionArea")
+_max_hp = 1
+
+[connection signal="has_died" from="Damageable" to="." method="_on_damageable_has_died" flags=7]

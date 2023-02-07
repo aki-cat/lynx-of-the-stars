@@ -1,9 +1,9 @@
 extends Node
 
-signal body_collided(normal: Vector3)
-
 const ANGLE_TILT := PI * 0.25
 const TRANSFORM_INTERPOLATION := 0.25
+
+signal collided_with_body(collision: PhysicsBody3D)
 
 @export
 var handling: float = 20.0
@@ -57,6 +57,7 @@ func move_body(delta: float):
 	self.body.velocity += Vector3(self._steering.x, self._steering.y, 0) * self.planar_speed * 10 * delta
 	self.body.velocity *= 0.9
 	if self.body.move_and_slide():
-		var collision_normal := self.body.get_last_slide_collision().get_normal(0)
-		emit_signal(body_collided.get_name(), collision_normal)
-
+		var collision: KinematicCollision3D = self.body.get_last_slide_collision()
+		var collision_normal: Vector3 = collision.get_normal(0)
+		emit_signal(collided_with_body.get_name(), collision.get_collider(0))
+		self.owner.velocity += collision_normal * 256

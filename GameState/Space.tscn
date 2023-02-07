@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b4ulfww3rxufh"]
 
-[ext_resource type="PackedScene" uid="uid://c7vejcd0008sa" path="res://Actors/Player.tscn" id="1_u3tms"]
+[ext_resource type="PackedScene" uid="uid://ce1gtveysjmgh" path="res://Actors/Player.tscn" id="1_u3tms"]
 [ext_resource type="Script" path="res://Actors/Components/PlayerCamera.gd" id="2_c28v8"]
 [ext_resource type="PackedScene" uid="uid://8yosofawqs77" path="res://Levels/Level00.tscn" id="3_8ye5e"]
 [ext_resource type="Texture2D" uid="uid://degm8hw6ay8d0" path="res://Textures/big-starry.png" id="4_38gfx"]

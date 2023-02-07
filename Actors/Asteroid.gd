@@ -9,3 +9,8 @@ func _ready():
 		var child := c as Node3D
 		if child:
 			child.scale_object_local(Vector3.ONE * scales[idx])
+
+func _on_damageable_has_died():
+	await(get_tree().physics_frame)
+	self.get_parent().remove_child(self)
+	self.queue_free()

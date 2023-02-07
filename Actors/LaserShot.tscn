@@ -40,8 +40,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_3567e")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_uupl2"]
-size = Vector3(0.903601, 0.683785, 8)
+[sub_resource type="BoxShape3D" id="BoxShape3D_6du83"]
+size = Vector3(1.80916, 2.06768, 7.75423)
 
 [node name="Laser" type="Area3D"]
 collision_layer = 8
@@ -60,6 +60,5 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("1_g4w8k")
 
 [node name="Hitbox" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_uupl2")
-
-[node name="ShotMovement" type="Node" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.368444)
+shape = SubResource("BoxShape3D_6du83")
